@@ -7,5 +7,7 @@ from dogs import views
 urlpatterns = [
     path('', views.MainView, name='mainpage'),
     path('photo/<str:pk>/', views.ViewPhoto, name = 'photo'),
+    path('addphoto/', views.addPhoto, name='addPhoto'),
+
 
 ]

@@ -32,43 +32,21 @@ def ViewPhoto(request, pk):
     return render(request, 'photo.html', {'photo': photo})
 
 
-def addPhoto():
+def addPhoto(request):
     categories = Category.objects.all()
+    photo = Photo.objects.all()
+    print(len(photo))
+    if (len(photo) < 172):
 
-    response = requests.get('https://api.thedogapi.com/v1/breeds')
-    response_json = (json.loads(response.text))
-    images_list = [d['image']['url'] for d in response_json]
-    name_list = [d['name'] for d in response_json]
+        response = requests.get('https://api.thedogapi.com/v1/breeds')
+        response_json = (json.loads(response.text))
+        images_list = [d['image']['url'] for d in response_json]
+        name_list = [d['name'] for d in response_json]
 
-    category = Category.objects.get(name='Dogs')
-    for i in range(len(images_list)):
-        Photo.objects.filter(id=i).create(image=images_list[i - 1], description=name_list[i - 1], category=category)
+        category = Category.objects.get(name='Dogs')
+        for i in range(len(images_list)):
+            Photo.objects.filter(id=i).create(image=images_list[i - 1], description=name_list[i - 1], category=category)
 
-# global searched
-    # if request.method == 'POST':
-    #     searched = request.POST['searched']
+    context={'categories': categories, 'photo': photo}
+    return render(request, 'Dogs.html', context)
 
-    # print(searched)
-    # response = requests.get('https://api.thedogapi.com/v1/breeds')
-    # response_json = (json.loads(response.text))
-    # images_list = [d['image'] for d in response_json]
-    # images = [d['url'] for d in images_list]
-    # template_name = 'gallery.html'
-    # name = response_json
-    # context = {
-    #     'obj': name,
-    #     'searched':searched,
-    #     'image':images[0],
-    # }
-
-
-
-# response = requests.get('https://api.thedogapi.com/v1/breeds')
-    # response_json = (json.loads(response.text))
-    # images_list = [d['image'] for d in response_json]
-    # images = [d['url'] for d in images_list]
-
-    # context = {
-        
-    #     'image':images[0],
-    # }
