@@ -16,16 +16,6 @@ from dogs import models
 
 
 
-response = requests.get('https://api.thedogapi.com/v1/breeds')
-response_json = (json.loads(response.text))
-images_list = [d['image']['url'] for d in response_json]
-name_list = [d['name'] for d in response_json]
-
-
-
-for i in range(len(images_list)):
-    Photo.objects.filter(id = i).create(image = images_list[i -1], description=name_list[i-1])
-
 
 def MainView(request):
     categories = Category.objects.all()
@@ -37,19 +27,24 @@ def MainView(request):
     return render(request, 'gallery.html', context)
 
 
-
 def ViewPhoto(request, pk):
     photo = Photo.objects.get(id=pk)
-    return render(request,'photo.html', {'photo':photo})
+    return render(request, 'photo.html', {'photo': photo})
 
 
+def addPhoto():
+    categories = Category.objects.all()
 
+    response = requests.get('https://api.thedogapi.com/v1/breeds')
+    response_json = (json.loads(response.text))
+    images_list = [d['image']['url'] for d in response_json]
+    name_list = [d['name'] for d in response_json]
 
+    category = Category.objects.get(name='Dogs')
+    for i in range(len(images_list)):
+        Photo.objects.filter(id=i).create(image=images_list[i - 1], description=name_list[i - 1], category=category)
 
-
-
-
- # global searched
+# global searched
     # if request.method == 'POST':
     #     searched = request.POST['searched']
 

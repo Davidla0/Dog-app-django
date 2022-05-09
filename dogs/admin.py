@@ -7,5 +7,5 @@ admin.site.register(Category)
 admin.site.register(Photo)   
 
 
-Photo.objects.all().delete()
-Category.objects.all().delete()
+# Photo.objects.all().delete()
+# Category.objects.all().delete()
